@@ -8,7 +8,7 @@ def read_my_csv():
     return df
 
 def make_plot_ecg(df):
-    fig = px.line(df, x= "Zeit in ms", y="Messwerte in mV")
+    fig = px.line(df.head(2000), x= "Zeit in ms", y="Messwerte in mV")
     return fig
 
 def make_plot_power(df2):
@@ -33,30 +33,3 @@ def make_plot_power(df2):
     fig.add_hrect (y0=zone4, y1=HR_max, fillcolor="red", opacity=0.5, layer="below", line_width=0)
 
     return fig
-"""
-def define_zones(df2):
-    HR_max = df2["HeartRate"].max()
-    zone1 = HR_max * 0.6
-    zone2 = HR_max * 0.7
-    zone3 = HR_max * 0.8
-    zone4 = HR_max * 0.9
-
-    df2["Zone1"] = df2["HeartRate"] < zone1
-    df2["Zone2"] = (df2["HeartRate"] >= zone1) & (df2["HeartRate"] < zone2)
-    df2["Zone3"] = (df2["HeartRate"] >= zone2) & (df2["HeartRate"] < zone3)
-    df2["Zone4"] = (df2["HeartRate"] >= zone3) & (df2["HeartRate"] < zone4)
-    df2["Zone5"] = df2["HeartRate"] >= zone4
-    return df2, [zone1, zone2, zone3, zone4, HR_max]
-
-def make_plot_zones(zones, fig, df2):
-    if fig is None:
-        if df2 is None:
-            raise ValueError("Either fig or df must be provided")
-    fig = px.line(df2, y="HeartRate")
-    fig.add_hrect(y0=0, y1=zones[0], fillcolor="lightgreen", opacity=0.5, layer="below", line_width=0)
-    fig.add_hrect(y0=zones[0], y1=zones[1], fillcolor="green", opacity=0.5, layer="below", line_width=0)
-    fig.add_hrect(y0=zones[1], y1=zones[2], fillcolor="yellow", opacity=0.5, layer="below", line_width=0)
-    fig.add_hrect(y0=zones[2], y1=zones[3], fillcolor="orange", opacity=0.5, layer="below", line_width=0)
-    fig.add_hrect(y0=zones[3], y1=zones[4], fillcolor="red", opacity=0.5, layer="below", line_width=0)
-    return fig
-"""
