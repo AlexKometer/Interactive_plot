@@ -1,40 +1,62 @@
-# %%
-
-# Paket für Bearbeitung von Tabellen
 import pandas as pd
-
-# Paket
-## zuvor !pip install plotly
-## ggf. auch !pip install nbformat
 import plotly.express as px
 
-
 def read_my_csv():
-    # Einlesen eines Dataframes
-    ## "\t" steht für das Trennzeichen in der txt-Datei (Tabulator anstelle von Beistrich)
-    ## header = None: es gibt keine Überschriften in der txt-Datei
     df = pd.read_csv("data/ekg_data/01_Ruhe.txt", sep="\t", header=None)
-
-    # Setzt die Columnnames im Dataframe
     df.columns = ["Messwerte in mV","Zeit in ms"]
-    
-    # Gibt den geladen Dataframe zurück
+
     return df
 
-
-# %%
-
-def make_plot(df):
-
-    # Erstellte einen Line Plot, der ersten 2000 Werte mit der Zeit aus der x-Achse
-    fig = px.line(df.head(2000), x= "Zeit in ms", y="Messwerte in mV")
+def make_plot_ecg(df):
+    fig = px.line(df, x= "Zeit in ms", y="Messwerte in mV")
     return fig
 
-#%% Test
+def make_plot_power(df2):
+    fig = px.line (df2,x="Time in s",y=["PowerOriginal", "HeartRate"],color_discrete_sequence=["lightgray","royalblue"])
 
-#df = read_my_csv()
-#fig = make_plot(df)
+    HR_max = df2["HeartRate"].max ()
+    zone1 = HR_max * 0.6
+    zone2 = HR_max * 0.7
+    zone3 = HR_max * 0.8
+    zone4 = HR_max * 0.9
 
-#fig.show()
+    df2["Zone1"] = df2["HeartRate"] < zone1
+    df2["Zone2"] = (df2["HeartRate"] >= zone1) & (df2["HeartRate"] < zone2)
+    df2["Zone3"] = (df2["HeartRate"] >= zone2) & (df2["HeartRate"] < zone3)
+    df2["Zone4"] = (df2["HeartRate"] >= zone3) & (df2["HeartRate"] < zone4)
+    df2["Zone5"] = df2["HeartRate"] >= zone4
 
-# %%
+    fig.add_hrect (y0=0, y1=zone1, fillcolor="lightgreen", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect (y0=zone1, y1=zone2, fillcolor="green", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect (y0=zone2, y1=zone3, fillcolor="yellow", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect (y0=zone3, y1=zone4, fillcolor="orange", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect (y0=zone4, y1=HR_max, fillcolor="red", opacity=0.5, layer="below", line_width=0)
+
+    return fig
+"""
+def define_zones(df2):
+    HR_max = df2["HeartRate"].max()
+    zone1 = HR_max * 0.6
+    zone2 = HR_max * 0.7
+    zone3 = HR_max * 0.8
+    zone4 = HR_max * 0.9
+
+    df2["Zone1"] = df2["HeartRate"] < zone1
+    df2["Zone2"] = (df2["HeartRate"] >= zone1) & (df2["HeartRate"] < zone2)
+    df2["Zone3"] = (df2["HeartRate"] >= zone2) & (df2["HeartRate"] < zone3)
+    df2["Zone4"] = (df2["HeartRate"] >= zone3) & (df2["HeartRate"] < zone4)
+    df2["Zone5"] = df2["HeartRate"] >= zone4
+    return df2, [zone1, zone2, zone3, zone4, HR_max]
+
+def make_plot_zones(zones, fig, df2):
+    if fig is None:
+        if df2 is None:
+            raise ValueError("Either fig or df must be provided")
+    fig = px.line(df2, y="HeartRate")
+    fig.add_hrect(y0=0, y1=zones[0], fillcolor="lightgreen", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect(y0=zones[0], y1=zones[1], fillcolor="green", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect(y0=zones[1], y1=zones[2], fillcolor="yellow", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect(y0=zones[2], y1=zones[3], fillcolor="orange", opacity=0.5, layer="below", line_width=0)
+    fig.add_hrect(y0=zones[3], y1=zones[4], fillcolor="red", opacity=0.5, layer="below", line_width=0)
+    return fig
+"""
