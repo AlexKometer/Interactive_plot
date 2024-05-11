@@ -1,8 +1,10 @@
 import pandas as pd
 import plotly.express as px
 
-def read_my_csv():
-    df = pd.read_csv("data/ekg_data/01_Ruhe.txt", sep="\t", header=None)
+
+
+def read_my_csv(path):
+    df = pd.read_csv(path, sep="\t", header=None)
     df.columns = ["Messwerte in mV","Zeit in ms"]
 
     return df
