@@ -32,14 +32,13 @@ with tab1:
     path = st.selectbox('Choose your File:', paths)
     df = read_my_csv(path)
     fig = make_plot_ecg(df)
-
     st.plotly_chart(fig)
 
 with tab2:
-    st.subheader ("Interaktiver Plot")
+    st.subheader("Interaktiver Plot")
     st.header("Power- & Heart-Data")
     fig = make_plot_power(df2)
-    st.plotly_chart (fig)
+    st.plotly_chart(fig)
 
 
 

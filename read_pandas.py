@@ -10,7 +10,11 @@ def read_my_csv(path):
     return df
 
 def make_plot_ecg(df):
-    fig = px.line(df.head(2000), x= "Zeit in ms", y="Messwerte in mV")
+    # Creating a line plot using Plotly Express
+    fig = px.line(df, x="Zeit in ms", y="Messwerte in mV")
+
+    # Configuring the layout to include a range slider
+    fig.update_layout(xaxis=dict(rangeslider=dict(visible=True,thickness=0.1),type='linear',fixedrange=False),yaxis=dict(fixedrange=True ))
     return fig
 
 def make_plot_power(df2):
