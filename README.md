@@ -19,7 +19,7 @@ Die App bietet die folgenden Funktionen:
 
 - Laden von Leistungstestdaten aus einer CSV-Datei.
 - Anzeige des Mittelwerts und des Maximalwerts der Leistung.
-- Interaktiver Plot von Leistung und Herzfrequenz über die Zeit.
+- Interaktiver Plot von Leistung und Herzfrequenz über die Zeit. In welchem es möglich ist, das EKG über die gesamte Länge zu betrachten.
 - Einteilung der Aktivität in fünf Zonen basierend auf der eingegebenen maximalen Herzfrequenz.
 - Anzeige der Zeit, die in jeder Herzfrequenzzone verbracht wurde.
 - Berechnung der durchschnittlichen Leistung in jeder Zone.
